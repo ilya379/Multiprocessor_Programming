@@ -9,11 +9,22 @@ public class HW2Synchronized {
 	
 	public static int N = 16;
 	public static int M = 10000;
-
-	//@sun.misc.Contended
-	public static boolean syncFlag = false;
+	
+	public static State[] states;
+	
+	
+	public static void init() {
+		states = new State[N];
+		for (int i=0; i<N; i++) {
+			states[i] = new State(i+1);
+		}
+	}
 	
 	public static void main(String[] args) throws InterruptedException {
+		
+		for (int i=0; i<N; i++) {
+			
+		}
 		
 		Thread ping = new Thread(new Runnable() {
 			private int c = 0;
@@ -60,27 +71,16 @@ public class HW2Synchronized {
 			}
 		});
 		
-		ping.start();
-		pong.start();
+	}
+	
+	@sun.misc.Contended
+	public static class State {
+		public boolean syncFlag = false;
+		public final int name;
+		public State(int name) {
+			this.name = name;
+		}
 		
-		// используется для сравнения различных вариантов
-		// Thread.sleep(10000);
-		// ping.stop();
-		// pong.stop();
-		
-		/* вариант 
-			synchronized (PING) {
-				if (syncFlag) {
-					System.out.println(String.format(PING, c++));
-					syncFlag = false;
-				}
-			}	
-		
-		работает на ~30% медленнее, т.к. происходи захват монитора для каждой проверки, даже когда в крит. секцию должен попасть другой поток.
-		
-		А вообще задача не стояла, чтобы работало быстро.
-		
-		 */
 	}
 
 }
